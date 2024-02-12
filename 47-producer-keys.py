@@ -16,14 +16,14 @@ producer = KafkaProducer(
     sasl_plain_password=config.SASL_PLAIN_PASSWORD
     )
 try:
-    for j in range(10):
-        for i in range(30):
-            record_metadata = producer.send(
-                config.TOPIC_NAME, b'Hello World'
-                ).add_callback(on_success).add_errback(on_failure)
-        time.sleep(500)
+    for i in range(10):
+        message_key = f"id_{i}"
+        message = f"Hello world {i}"
+        record_metadata = producer.send(
+            config.TOPIC_NAME, key=message_key.encode(), value=message.encode(),
+            ).add_callback(on_success).add_errback(on_failure)
 except Exception as e:
-    print("Error producing a message")
+    print("Error producing a message", str(e))
 finally:
     producer.flush()
     producer.close()
