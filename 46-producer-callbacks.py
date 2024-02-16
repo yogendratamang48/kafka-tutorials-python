@@ -20,8 +20,9 @@ producer = KafkaProducer(
 try:
     for j in range(30):
         for i in range(10):
+            message_string = f'Hello world {i} - {j}'
             record_metadata = producer.send(
-                config.TOPIC_NAME, b'Hello World'
+                config.TOPIC_NAME, message_string.encode()
                 ).add_callback(on_success).add_errback(on_failure)
         time.sleep(0.900)
     producer.flush()

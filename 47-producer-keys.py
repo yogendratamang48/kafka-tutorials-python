@@ -13,7 +13,8 @@ producer = KafkaProducer(
     sasl_mechanism=config.SASL_MECHANISM,
     security_protocol=config.SECURITY_PROTOCOL,
     sasl_plain_username=config.SASL_PLAIN_USERNAME,
-    sasl_plain_password=config.SASL_PLAIN_PASSWORD
+    sasl_plain_password=config.SASL_PLAIN_PASSWORD,
+    auto_offset_reset="earliest"
     )
 try:
     for i in range(10):
