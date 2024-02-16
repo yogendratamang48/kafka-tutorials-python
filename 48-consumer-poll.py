@@ -29,3 +29,4 @@ while True:
         for topic, records in msg.items():
             for record in records:
                 print(f'Topic: {record.topic}, Partion: {record.partition}, Offset: {record.partition}')
+                print(f'Message: {record.value}, Key: {record.key}')
