@@ -2,13 +2,15 @@ from kafka import KafkaConsumer
 import config
 import time
 import logging
-logging.getLogger('kafka.consumer.fetcher').setLevel(logging.DEBUG)
+import yaml
+import logging.config
 
-def on_success(record_meta):
-    print(f"Topic: {record_meta.topic}\nPartition: {record_meta.partition}\nOffset: {record_meta.offset}\n")
+# Initialize the logger once as the application starts up.
+with open("logging.yaml", 'rt') as f:
+    config_log = yaml.safe_load(f.read())
+    logging.config.dictConfig(config_log)
 
-def on_failure(excep):
-    print(excep)
+logger = logging.getLogger(__name__)
 
 consumer = KafkaConsumer(
     bootstrap_servers=config.BOOTSTRAP_SERVERS,
@@ -23,10 +25,9 @@ consumer = KafkaConsumer(
 
 consumer.subscribe([config.TOPIC_NAME])
 while True:
-    print("polling")
     msg = consumer.poll(1000)
     if msg:
         for topic, records in msg.items():
             for record in records:
-                print(f'Topic: {record.topic}, Partion: {record.partition}, Offset: {record.partition}')
-                print(f'Message: {record.value}, Key: {record.key}')
+                logger.info(f'Topic: {record.topic}, Partion: {record.partition}, Offset: {record.partition}')
+                logger.info(f'Message: {record.value}, Key: {record.key}')

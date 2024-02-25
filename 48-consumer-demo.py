@@ -1,12 +1,6 @@
 from kafka import KafkaConsumer
 import config
-import time
 
-def on_success(record_meta):
-    print(f"Topic: {record_meta.topic}\nPartition: {record_meta.partition}\nOffset: {record_meta.offset}\n")
-
-def on_failure(excep):
-    print(excep)
 
 consumer = KafkaConsumer(
     bootstrap_servers=config.BOOTSTRAP_SERVERS,
